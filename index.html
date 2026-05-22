@@ -35,6 +35,10 @@
       overflow-x: hidden;
     }
 
+    body.intro-active {
+      overflow: hidden;
+    }
+
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
 
@@ -80,7 +84,7 @@
       line-height: 0.94;
       letter-spacing: -0.05em;
       font-weight: 600;
-      max-width: 10.5ch;
+      max-width: 13.5ch;
     }
 
     h2 {
@@ -133,70 +137,141 @@
 
     .topbar {
       position: fixed;
-      top: 18px;
+      top: 14px;
       left: 0;
       right: 0;
-      z-index: 30;
+      z-index: 40;
+    }
+
+    .brand-intro {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(201, 154, 58, 0.16), transparent 18%),
+        radial-gradient(circle at 50% 50%, rgba(227, 189, 104, 0.08), transparent 30%),
+        linear-gradient(180deg, #060606 0%, #0b0b0b 100%);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 520ms ease, visibility 520ms ease;
+    }
+
+    .brand-intro::before,
+    .brand-intro::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .brand-intro::before {
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 96px 96px;
+      mask-image: radial-gradient(circle at center, black 28%, transparent 76%);
+      opacity: 0.34;
+    }
+
+    .brand-intro::after {
+      background: linear-gradient(90deg, transparent 0%, rgba(201, 154, 58, 0.08) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: introSweep 1.3s ease-out 220ms both;
+      opacity: 0.9;
+    }
+
+    .brand-intro.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .brand-intro-inner {
+      position: relative;
+      display: grid;
+      justify-items: center;
+      gap: 20px;
+      text-align: center;
+      animation: introRise 860ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .brand-intro-mark {
+      width: min(230px, 58vw);
+      filter: drop-shadow(0 0 36px rgba(201, 154, 58, 0.16));
+      clip-path: inset(0 100% 0 0);
+      animation: introLogoReveal 920ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms forwards;
+    }
+
+    .brand-intro-line {
+      width: 132px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--light-gold), transparent);
+      animation: introLineExpand 900ms ease-out 180ms both;
     }
 
     .topbar-inner {
-      width: min(var(--content-width), calc(100% - 26px));
+      width: min(calc(100% - 26px), 1510px);
       margin: 0 auto;
-      padding: 12px 18px;
+      padding: 14px 20px 14px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-radius: 999px;
-      background: rgba(8, 8, 8, 0.34);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.16);
+      background: rgba(8, 8, 8, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
       transition: background 220ms ease, border-color 220ms ease;
     }
 
     .topbar.scrolled .topbar-inner {
-      background: rgba(8, 8, 8, 0.74);
-      border-color: rgba(201, 154, 58, 0.16);
+      background: rgba(8, 8, 8, 0.84);
+      border-color: rgba(201, 154, 58, 0.18);
     }
 
     .brand-lockup {
       display: inline-flex;
       align-items: center;
-      gap: 14px;
+      gap: 18px;
     }
 
     .brand-lockup img {
-      width: 108px;
+      width: 122px;
       height: auto;
     }
 
     .brand-text {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .brand-text strong {
-      letter-spacing: 0.16rem;
+      letter-spacing: 0.12rem;
       text-transform: uppercase;
-      font-size: 1.02rem;
+      font-size: 1rem;
       font-weight: 600;
     }
 
     .brand-text span {
-      font-size: 0.82rem;
-      color: rgba(245, 242, 234, 0.58);
+      font-size: 0.94rem;
+      color: rgba(245, 242, 234, 0.68);
       text-transform: uppercase;
-      letter-spacing: 0.12rem;
+      letter-spacing: 0.11rem;
       font-weight: 600;
     }
 
     .topnav {
       display: flex;
       align-items: center;
-      gap: 24px;
-      font-size: 0.94rem;
-      color: rgba(245, 242, 234, 0.74);
+      gap: 36px;
+      font-size: 0.9rem;
+      color: rgba(245, 242, 234, 0.82);
     }
 
     .topnav a:not(.topnav-cta) {
@@ -223,92 +298,196 @@
     }
 
     .topnav-cta {
-      padding: 11px 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 26px;
       border-radius: 999px;
       background: linear-gradient(135deg, var(--light-gold), var(--brand-gold));
       color: var(--graphite);
       font-weight: 600;
-      box-shadow: 0 10px 28px rgba(201, 154, 58, 0.24);
+      box-shadow: 0 12px 30px rgba(201, 154, 58, 0.24);
+      white-space: nowrap;
     }
 
     .hero {
       position: relative;
-      min-height: min(84vh, 780px);
-      display: grid;
-      align-items: center;
-      padding: 108px 0 30px;
+      min-height: 1010px;
+      padding: 126px 0 28px;
       overflow: hidden;
+      background:
+        radial-gradient(circle at 78% 34%, rgba(201, 154, 58, 0.1), transparent 18%),
+        linear-gradient(180deg, #050505 0%, #080808 100%);
     }
 
-    .hero-bg,
+    .hero-map,
+    .hero-map-flow,
     .hero-overlay,
-    .hero-grid {
+    .hero-vignette {
       position: absolute;
       inset: 0;
     }
 
-    .hero-bg video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(0.74) brightness(0.42) contrast(1.08);
-      transform: scale(1.08);
-      animation: heroVideoDrift 12s ease-out forwards;
+    .hero-map {
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 26%),
+        linear-gradient(180deg, #080808 0%, #050505 100%);
+    }
+
+    .hero-map::before,
+    .hero-map::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-map::before {
+      background:
+        url("assets/hero-map-reference-clean.png") right center / cover no-repeat;
+      opacity: 0.98;
+      filter: saturate(1.04) contrast(1.05) brightness(0.9);
+      transform: scale(1.02);
+      transform-origin: 78% 52%;
+      animation: heroMapDrift 18s ease-in-out infinite alternate;
+    }
+
+    .hero-map::after {
+      background:
+        radial-gradient(circle at 73% 50%, rgba(255, 214, 138, 0.18), transparent 14%),
+        radial-gradient(circle at 84% 26%, rgba(255, 214, 138, 0.11), transparent 14%),
+        radial-gradient(circle at 86% 74%, rgba(255, 214, 138, 0.11), transparent 12%),
+        radial-gradient(circle at 66% 60%, rgba(255, 214, 138, 0.05), transparent 18%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      animation: heroGlowPulse 7s ease-in-out infinite;
+    }
+
+    .hero-map-flow {
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.56;
+      mix-blend-mode: screen;
+    }
+
+    .hero-map-flow::before,
+    .hero-map-flow::after {
+      content: "";
+      position: absolute;
+      inset: -12%;
+      pointer-events: none;
+    }
+
+    .hero-map-flow::before {
+      background:
+        linear-gradient(118deg, transparent 30%, rgba(255, 224, 154, 0.14) 36%, transparent 44%) 72% 53% / 460px 4px no-repeat,
+        linear-gradient(27deg, transparent 30%, rgba(255, 224, 154, 0.12) 36%, transparent 44%) 76% 34% / 360px 3px no-repeat,
+        linear-gradient(94deg, transparent 30%, rgba(255, 224, 154, 0.1) 36%, transparent 44%) 88% 26% / 280px 3px no-repeat,
+        linear-gradient(-12deg, transparent 30%, rgba(255, 224, 154, 0.11) 36%, transparent 44%) 85% 73% / 320px 3px no-repeat,
+        linear-gradient(-18deg, transparent 30%, rgba(255, 224, 154, 0.08) 36%, transparent 44%) 72% 60% / 420px 2px no-repeat;
+      filter: blur(0.8px);
+      animation: heroFlowRun 6.8s linear infinite;
+    }
+
+    .hero-map-flow::after {
+      background:
+        radial-gradient(circle at 73% 50%, rgba(255, 224, 154, 0.08), transparent 13%),
+        radial-gradient(circle at 84% 26%, rgba(255, 224, 154, 0.05), transparent 11%),
+        radial-gradient(circle at 86% 74%, rgba(255, 224, 154, 0.05), transparent 10%);
+      animation: heroNodePulse 4.6s ease-in-out infinite;
     }
 
     .hero-overlay {
       background:
-        linear-gradient(105deg, rgba(8, 8, 8, 0.94) 10%, rgba(8, 8, 8, 0.78) 42%, rgba(8, 8, 8, 0.42) 72%, rgba(8, 8, 8, 0.84) 100%),
-        linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.62));
+        linear-gradient(90deg, rgba(1, 1, 1, 0.985) 0%, rgba(3, 3, 3, 0.955) 16%, rgba(5, 5, 5, 0.84) 29%, rgba(6, 6, 6, 0.42) 42%, rgba(7, 7, 7, 0.12) 54%, rgba(7, 7, 7, 0.02) 68%, rgba(7, 7, 7, 0) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.08) 28%, rgba(0, 0, 0, 0.36) 100%);
     }
 
-    .hero-grid {
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: 86px 86px;
-      opacity: 0.4;
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 92%);
+    .hero-vignette {
+      background:
+        radial-gradient(circle at 72% 50%, transparent 36%, rgba(0, 0, 0, 0.12) 74%, rgba(0, 0, 0, 0.46) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.38));
+    }
+
+    .hero-stage {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 862px;
     }
 
     .hero-content {
       position: relative;
-      z-index: 2;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
-      gap: 28px;
-      align-items: end;
+      grid-template-columns: minmax(0, 760px) minmax(240px, 1fr);
+      gap: 0;
+      align-items: center;
+      flex: 1;
     }
 
     .hero-copy {
-      max-width: 700px;
-      animation: heroContentRise 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      max-width: 760px;
+      padding-top: 18px;
+      text-align: left;
     }
 
     .gold-text {
       color: var(--light-gold);
     }
 
+    .hero-copy .eyebrow {
+      margin-bottom: 22px;
+      color: rgba(227, 189, 104, 0.94);
+      letter-spacing: 0.3rem;
+      font-size: 0.88rem;
+    }
+
+    .hero-copy .eyebrow::before {
+      display: none;
+    }
+
+    .hero-copy h1 {
+      max-width: 8.8ch;
+      font-size: clamp(4rem, 6.8vw, 5.95rem);
+      line-height: 0.94;
+      letter-spacing: -0.06em;
+      text-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    .hero-copy h1 .gold-text {
+      white-space: nowrap;
+    }
+
     .hero-copy .lead {
-      margin-top: 22px;
+      margin-top: 26px;
+      max-width: 36ch;
+      font-size: clamp(1rem, 1.45vw, 1.12rem);
+      line-height: 1.68;
+      color: rgba(245, 242, 234, 0.84);
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 28px;
+      justify-content: flex-start;
+      gap: 18px;
+      margin-top: 34px;
     }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 52px;
-      padding: 14px 24px;
+      gap: 10px;
+      min-height: 58px;
+      padding: 14px 28px;
       border-radius: 999px;
       border: 1px solid transparent;
-      transition: transform 220ms ease, background 220ms ease, border-color 220ms ease;
+      transition: transform 220ms ease, background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
     }
 
     .btn:hover {
@@ -319,80 +498,743 @@
       background: linear-gradient(135deg, var(--light-gold), var(--brand-gold));
       color: var(--graphite);
       font-weight: 600;
-      box-shadow: 0 12px 34px rgba(201, 154, 58, 0.24);
+      box-shadow: 0 14px 34px rgba(201, 154, 58, 0.24);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 18px 40px rgba(201, 154, 58, 0.3);
+    }
+
+    .whatsapp-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      flex: none;
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(245, 242, 234, 0.16);
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(245, 242, 234, 0.28);
       color: var(--warm-white);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
     }
 
-    .hero-side {
-      padding: 24px;
-      border-radius: var(--radius-xl);
+    .hero-arrow {
+      width: 18px;
+      height: 18px;
+    }
+
+    .hero-map-details {
+      display: none;
+    }
+
+    .map-road {
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .map-road::before,
+    .map-road::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+    }
+
+    .map-road::before {
+      background: rgba(255, 214, 138, 0.22);
+      filter: blur(8px);
+      opacity: 0.72;
+    }
+
+    .map-road::after {
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
-        rgba(13, 13, 13, 0.58);
-      border: 1px solid rgba(201, 154, 58, 0.16);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
-      animation: heroCardRise 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        linear-gradient(90deg, rgba(255, 214, 138, 0) 0%, rgba(255, 214, 138, 0.98) 18%, rgba(255, 214, 138, 0.98) 82%, rgba(255, 214, 138, 0) 100%);
+      box-shadow: 0 0 24px rgba(255, 214, 138, 0.24);
+    }
+
+    .map-road-primary {
+      width: 520px;
+      height: 4px;
+      top: 56%;
+      left: 48%;
+      transform: rotate(118deg);
+    }
+
+    .map-road-secondary {
+      width: 420px;
+      height: 3px;
+      top: 34%;
+      left: 51%;
+      transform: rotate(26deg);
+    }
+
+    .map-road-tertiary {
+      width: 360px;
+      height: 3px;
+      top: 28%;
+      left: 63%;
+      transform: rotate(94deg);
+    }
+
+    .map-road-quaternary {
+      width: 300px;
+      height: 3px;
+      top: 71%;
+      left: 56%;
+      transform: rotate(-10deg);
+    }
+
+    .map-road-dashed {
+      width: 460px;
+      height: 2px;
+      top: 47%;
+      left: 50%;
+      transform: rotate(-18deg);
+      opacity: 0.84;
+    }
+
+    .map-road-dashed::before {
+      display: none;
+    }
+
+    .map-road-dashed::after {
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 214, 138, 0.96) 0 8px, transparent 8px 17px);
+      filter: drop-shadow(0 0 10px rgba(255, 214, 138, 0.26));
+    }
+
+    .hero-pin {
+      position: relative;
+      width: 100px;
+      height: 132px;
+      color: var(--light-gold);
+      filter: drop-shadow(0 0 18px rgba(255, 214, 138, 0.2));
+      pointer-events: none;
+    }
+
+    .hero-pin svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-pin .pin-pulse,
+    .hero-pin .pin-ring,
+    .hero-pin .pin-ring::after {
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-pin .pin-pulse {
+      width: 26px;
+      height: 26px;
+      background: rgba(255, 214, 138, 0.84);
+      filter: blur(12px);
+      opacity: 0.9;
+    }
+
+    .hero-pin .pin-ring {
+      width: 72px;
+      height: 72px;
+      border: 2px solid rgba(255, 214, 138, 0.56);
+      box-shadow: 0 0 0 10px rgba(255, 214, 138, 0.08), 0 0 30px rgba(255, 214, 138, 0.16);
+    }
+
+    .hero-pin .pin-ring::after {
+      content: "";
+      inset: 12px;
+      border: 1px solid rgba(255, 214, 138, 0.28);
+      transform: none;
+      left: 12px;
+      bottom: 12px;
+      width: auto;
+      height: auto;
+    }
+
+    .hero-pin-main {
+      position: absolute;
+      top: 25%;
+      right: 11%;
+      width: 188px;
+      height: 238px;
+    }
+
+    .hero-pin-main .pin-pulse {
+      width: 44px;
+      height: 44px;
+      bottom: 18px;
+      filter: blur(18px);
+    }
+
+    .hero-pin-main .pin-ring {
+      width: 114px;
+      height: 114px;
+      bottom: 3px;
+      border-width: 2px;
+      box-shadow: 0 0 0 14px rgba(255, 214, 138, 0.08), 0 0 42px rgba(255, 214, 138, 0.26);
+    }
+
+    .hero-pin-alt-1 {
+      position: absolute;
+      top: 10%;
+      left: 34%;
+      width: 94px;
+      height: 126px;
+    }
+
+    .hero-pin-alt-2 {
+      position: absolute;
+      top: 8%;
+      right: 28%;
+      width: 82px;
+      height: 114px;
+    }
+
+    .hero-pin-alt-3 {
+      position: absolute;
+      top: 24%;
+      right: -1%;
+      width: 96px;
+      height: 126px;
+    }
+
+    .hero-pin-alt-4 {
+      position: absolute;
+      left: 38%;
+      bottom: 13%;
+      width: 88px;
+      height: 120px;
+    }
+
+    .hero-pin-alt-5 {
+      position: absolute;
+      right: 12%;
+      bottom: -6%;
+      width: 96px;
+      height: 126px;
+    }
+
+    .hero-cards {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 34px;
+    }
+
+    .hero-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-height: 142px;
+      padding: 18px 24px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(31, 31, 31, 0.84), rgba(13, 13, 13, 0.8));
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(14px);
+      transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease, background 240ms ease;
+    }
+
+    .hero-card-icon {
+      display: grid;
+      place-items: center;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      border: 1px solid rgba(227, 189, 104, 0.42);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--light-gold);
+      flex: none;
+      box-shadow: inset 0 0 0 1px rgba(255, 214, 138, 0.08);
+      transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease, background 260ms ease;
+    }
+
+    .hero-card-icon svg {
+      width: 34px;
+      height: 34px;
+      transition: transform 260ms ease, filter 260ms ease;
+    }
+
+    .hero-card-copy {
+      max-width: 30ch;
+    }
+
+    .hero-card-copy strong {
+      display: block;
+      margin-bottom: 10px;
+      color: rgba(227, 189, 104, 0.96);
+      font-size: 0.82rem;
+      letter-spacing: 0.24rem;
+      text-transform: uppercase;
+    }
+
+    .hero-card-copy p {
+      color: rgba(245, 242, 234, 0.84);
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(227, 189, 104, 0.24);
+      background: linear-gradient(180deg, rgba(36, 36, 36, 0.88), rgba(14, 14, 14, 0.84));
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-card:hover .hero-card-icon {
+      transform: translateY(-2px) scale(1.04);
+      border-color: rgba(227, 189, 104, 0.66);
+      background: rgba(227, 189, 104, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(255, 214, 138, 0.18), 0 0 24px rgba(227, 189, 104, 0.12);
+    }
+
+    .hero-card:hover .hero-card-icon svg {
+      transform: scale(1.06);
+      filter: drop-shadow(0 0 8px rgba(227, 189, 104, 0.18));
+    }
+
+    .launch-media {
+      position: relative;
+      min-height: 88vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background: #111111;
+    }
+
+    .launch-media::before,
+    .launch-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .launch-media::before {
+      background: url("assets/meeting-hero-rotated.jpg") center 42% / cover no-repeat;
+      transform: scale(1.02);
+      filter: saturate(0.92) contrast(1.02) brightness(0.92);
+    }
+
+    .launch-media::after {
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.12) 26%, rgba(0, 0, 0, 0.68) 100%),
+        linear-gradient(0deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.18) 38%, rgba(0, 0, 0, 0) 62%);
+    }
+
+    .launch-media-content {
+      position: relative;
+      z-index: 1;
+      width: min(100% - 56px, 1540px);
+      padding: 0 0 58px;
+      text-align: center;
+    }
+
+    .launch-media-title {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      max-width: none;
+      margin: 0 auto;
+    }
+
+    .launch-line {
+      display: inline-block;
+      overflow: hidden;
+      line-height: 0.94;
+      white-space: nowrap;
+    }
+
+    .launch-line span {
+      display: inline-block;
+      font-size: clamp(2.6rem, 4.85vw, 5.4rem);
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      color: #ffffff;
+      text-shadow: 0 20px 44px rgba(0, 0, 0, 0.38);
+      transform: translateY(108%);
+      opacity: 0;
+    }
+
+    .launch-media-content.visible .launch-line span {
+      animation: launchLineIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .launch-media-content.visible .launch-line:nth-child(2) span {
       animation-delay: 140ms;
     }
 
-    .hero-side img {
-      width: 154px;
-      margin-bottom: 16px;
+    .launch-media-content.visible .launch-line:nth-child(3) span {
+      animation-delay: 280ms;
     }
 
-    .hero-side p {
-      color: rgba(245, 242, 234, 0.72);
-      line-height: 1.8;
-      font-size: 0.96rem;
-    }
-
-    .hero-points {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .hero-point {
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      color: rgba(245, 242, 234, 0.82);
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    .hero-bottom-note {
+    .question-strip {
       position: relative;
-      z-index: 2;
-      display: flex;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(201, 154, 58, 0.08), transparent 34%),
+        linear-gradient(180deg, #fbf8f2 0%, #f2eadf 100%);
+      color: var(--graphite);
+      overflow: hidden;
+    }
+
+    .question-strip::before,
+    .question-strip::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 26vw;
+      min-width: 180px;
+      max-width: 360px;
+      height: 140%;
+      border: 1px solid rgba(201, 154, 58, 0.18);
+      border-radius: 50%;
+      opacity: 0.44;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .question-strip::before {
+      left: -18vw;
+    }
+
+    .question-strip::after {
+      right: -18vw;
+    }
+
+    .question-strip-inner {
+      position: relative;
+      z-index: 1;
+      width: min(100% - 56px, 1480px);
+      margin: 0 auto;
+      padding: 132px 0 104px;
+      text-align: center;
+    }
+
+    .question-strip-kicker {
+      display: inline-flex;
       align-items: center;
       gap: 18px;
-      margin-top: 28px;
-      color: rgba(245, 242, 234, 0.58);
-      font-size: 0.8rem;
+      color: rgba(201, 154, 58, 0.96);
+      font-size: 0.94rem;
+      font-weight: 600;
+      letter-spacing: 0.36rem;
       text-transform: uppercase;
-      letter-spacing: 0.12rem;
     }
 
-    .hero-bottom-note::before {
+    .question-strip-kicker::before,
+    .question-strip-kicker::after {
       content: "";
-      width: 72px;
+      width: 90px;
       height: 1px;
-      background: linear-gradient(90deg, rgba(201, 154, 58, 0.85), transparent);
+      background: rgba(201, 154, 58, 0.72);
+    }
+
+    .question-strip h2 {
+      max-width: 25ch;
+      margin: 34px auto 0;
+      font-size: clamp(2.8rem, 4.7vw, 5.2rem);
+      line-height: 1.12;
+      letter-spacing: -0.055em;
+      color: #161616;
+    }
+
+    .question-highlight {
+      color: var(--brand-gold);
+    }
+
+    .question-strip-arrow {
+      width: 22px;
+      height: 22px;
+      margin: 30px auto 0;
+      color: rgba(201, 154, 58, 0.9);
+      animation: questionArrowFloat 2.2s ease-in-out infinite;
+    }
+
+    .exposure-section {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(201, 154, 58, 0.08), transparent 22%),
+        linear-gradient(180deg, #0b0b0b 0%, #121212 100%);
+    }
+
+    .exposure-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 112px 112px;
+      opacity: 0.22;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.38), transparent 92%);
+    }
+
+    .exposure-section::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      bottom: -80px;
+      width: min(48vw, 620px);
+      height: min(56vw, 720px);
+      border: 1px solid rgba(201, 154, 58, 0.08);
+      border-radius: 999px 999px 0 0;
+      transform: rotate(24deg);
+      opacity: 0.46;
+      box-shadow: inset 0 0 0 1px rgba(201, 154, 58, 0.04);
+    }
+
+    .exposure-arrow {
+      position: absolute;
+      right: -40px;
+      bottom: -70px;
+      width: min(44vw, 620px);
+      height: min(48vw, 680px);
+      opacity: 0.18;
+      pointer-events: none;
+      filter: drop-shadow(0 0 36px rgba(201, 154, 58, 0.08));
+      animation: exposureArrowLift 5.4s ease-in-out infinite;
+    }
+
+    .exposure-arrow path {
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: exposureArrowFlow 5.4s ease-in-out infinite;
+    }
+
+    .exposure-wrap {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 0.94fr) minmax(320px, 0.9fr);
+      gap: 46px;
+      align-items: center;
+    }
+
+    .exposure-copy h2 {
+      max-width: 8.4ch;
+      white-space: normal;
+      font-size: clamp(3.1rem, 5.15vw, 5.25rem);
+      line-height: 0.96;
+      letter-spacing: -0.065em;
+    }
+
+    .exposure-copy .section-note {
+      max-width: 50ch;
+      margin-top: 16px;
+    }
+
+    .exposure-points {
+      display: grid;
+      gap: 16px;
+      margin-top: 34px;
+    }
+
+    .exposure-point {
+      position: relative;
+      overflow: hidden;
+      padding: 18px 20px 18px 58px;
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)),
+        rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+      color: rgba(245, 242, 234, 0.88);
+      line-height: 1.55;
+      transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+    }
+
+    .exposure-point::before {
+      content: "";
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(227, 189, 104, 0.9) 0 34%, transparent 36%),
+        linear-gradient(135deg, rgba(227, 189, 104, 0.18), rgba(201, 154, 58, 0.54));
+      box-shadow: 0 0 18px rgba(201, 154, 58, 0.18);
+    }
+
+    .exposure-point::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 12%, rgba(227, 189, 104, 0.16) 50%, transparent 86%);
+      opacity: 0;
+      transform: translateX(-24%);
+      transition: opacity 220ms ease, transform 320ms ease;
+      pointer-events: none;
+    }
+
+    .exposure-point:hover {
+      transform: translateY(-4px);
+      border-color: rgba(227, 189, 104, 0.28);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.03)),
+        rgba(255, 255, 255, 0.025);
+      box-shadow: 0 22px 46px rgba(0, 0, 0, 0.24);
+    }
+
+    .exposure-point:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .exposure-logos {
+      position: relative;
+      display: grid;
+      gap: 30px;
+      justify-items: center;
+      align-content: center;
+    }
+
+    .portal-logo {
+      position: relative;
+      display: block;
+      width: min(100%, 520px);
+      filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.22));
+    }
+
+    .portal-logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.94;
+      filter:
+        brightness(0) saturate(100%)
+        invert(100%) brightness(102%) contrast(98%);
+    }
+
+    .portal-logo-zp {
+      width: min(100%, 560px);
+    }
+
+    .portal-logo-clv {
+      width: min(100%, 520px);
+    }
+
+    .portal-slide {
+      opacity: 0;
+      transform: translateX(46px);
+      transition: opacity 760ms ease, transform 760ms ease;
+    }
+
+    .portal-slide.visible {
+      opacity: 1;
+      transform: translateX(0);
+      animation: portalFadeCycle 5.8s ease-in-out infinite;
+    }
+
+    .portal-slide.visible.delay-1 {
+      animation-delay: 180ms;
+    }
+
+    .portal-slide.visible.delay-2 {
+      animation-delay: 820ms;
+    }
+
+    @keyframes launchLineIn {
+      from {
+        transform: translateY(108%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes exposureArrowDraw {
+      from {
+        stroke-dashoffset: 1200;
+        opacity: 0.18;
+      }
+      to {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+    }
+
+    @keyframes exposureArrowLift {
+      0%, 100% {
+        transform: translateY(24px);
+        opacity: 0.12;
+      }
+      50% {
+        transform: translateY(-10px);
+        opacity: 0.26;
+      }
+    }
+
+    @keyframes exposureArrowFlow {
+      0% {
+        stroke-dashoffset: 1200;
+        opacity: 0.12;
+      }
+      30% {
+        opacity: 0.72;
+      }
+      65% {
+        opacity: 0.38;
+      }
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 0.12;
+      }
+    }
+
+    @keyframes portalFadeCycle {
+      0%, 100% {
+        opacity: 0.22;
+      }
+      18%,
+      68% {
+        opacity: 1;
+      }
+      84% {
+        opacity: 0.34;
+      }
     }
 
     .section-head {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
-      gap: 38px;
-      align-items: end;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      justify-items: center;
+      text-align: center;
       margin-bottom: 46px;
+    }
+
+    .section-head > * {
+      max-width: 860px;
+    }
+
+    .section-head h2,
+    .section-head .section-note {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-head .eyebrow {
+      justify-content: center;
     }
 
     .value-grid {
@@ -810,14 +1652,43 @@
     .delay-2 { transition-delay: 140ms; }
     .delay-3 { transition-delay: 210ms; }
 
-    @keyframes heroVideoDrift {
-      from { transform: scale(1.14); }
-      to { transform: scale(1.06); }
-    }
-
     @keyframes heroContentRise {
       from { opacity: 0; transform: translateY(28px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes questionArrowFloat {
+      0%, 100% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(8px); opacity: 1; }
+    }
+
+    @keyframes heroMapDrift {
+      from { transform: scale(1.02) translate3d(0, 0, 0); }
+      to { transform: scale(1.06) translate3d(18px, -10px, 0); }
+    }
+
+    @keyframes heroFlowRun {
+      from {
+        transform: translate3d(-18px, 10px, 0);
+        opacity: 0.22;
+      }
+      50% {
+        opacity: 0.72;
+      }
+      to {
+        transform: translate3d(26px, -12px, 0);
+        opacity: 0.22;
+      }
+    }
+
+    @keyframes heroNodePulse {
+      0%, 100% { opacity: 0.34; transform: scale(1); }
+      50% { opacity: 0.72; transform: scale(1.02); }
+    }
+
+    @keyframes heroGlowPulse {
+      0%, 100% { opacity: 0.78; filter: blur(0px); }
+      50% { opacity: 1; filter: blur(1px); }
     }
 
     @keyframes heroCardRise {
@@ -830,18 +1701,57 @@
       to { transform: translate3d(2%, -1%, 0) scale(1.04); opacity: 1; }
     }
 
+    @keyframes heroVideoDrift {
+      from { transform: scale(1.14); }
+      to { transform: scale(1.06); }
+    }
+
+    @keyframes introRise {
+      from { opacity: 0; transform: translateY(18px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes introLineExpand {
+      from { opacity: 0; transform: scaleX(0.25); }
+      to { opacity: 1; transform: scaleX(1); }
+    }
+
+    @keyframes introSweep {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
+    }
+
+    @keyframes introLogoReveal {
+      from { clip-path: inset(0 100% 0 0); opacity: 0.78; }
+      to { clip-path: inset(0 0 0 0); opacity: 1; }
+    }
+
     @media (max-width: 1120px) {
-      .hero-content,
       .section-head,
       .brand-layout,
       .footer-cta-grid,
-      .phase-two-strip {
+      .phase-two-strip,
+      .exposure-wrap {
         grid-template-columns: 1fr;
       }
 
+      .hero-content,
+      .hero-cards,
       .value-grid,
       .brand-points {
         grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 980px;
+      }
+
+      .hero-content {
+        gap: 14px;
+      }
+
+      .launch-media {
+        min-height: 64vh;
       }
     }
 
@@ -851,11 +1761,63 @@
       .topnav { display: none; }
       .profiles-grid { grid-template-columns: 1fr; }
       .section { padding: 82px 0; }
-      .hero { min-height: auto; padding: 112px 0 30px; }
+      .hero { min-height: auto; padding: 104px 0 28px; }
+      .hero-map::before {
+        background-position: 72% center;
+        background-size: cover;
+      }
+      .hero-map-flow {
+        opacity: 0.42;
+      }
+      .hero-overlay {
+        background:
+          linear-gradient(180deg, rgba(3, 3, 3, 0.62) 0%, rgba(3, 3, 3, 0.36) 100%),
+          linear-gradient(90deg, rgba(4, 4, 4, 0.94) 0%, rgba(5, 5, 5, 0.72) 34%, rgba(7, 7, 7, 0.18) 100%);
+      }
+      .hero-copy { padding-top: 0; }
+      .hero-copy .lead { max-width: 38ch; }
+      .hero-cards {
+        margin-top: 18px;
+      }
+      .hero-card {
+        min-height: 0;
+      }
+      .launch-media {
+        min-height: 70vh;
+      }
+      .launch-media::before {
+        background-position: center 30%;
+      }
+      .launch-media-content {
+        width: min(100% - 32px, 1080px);
+        padding-bottom: 42px;
+      }
+      .launch-media-title {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .launch-line span {
+        font-size: clamp(2.7rem, 7vw, 4.6rem);
+      }
+      .question-strip-inner {
+        width: min(100% - 32px, 1180px);
+        padding: 104px 0 78px;
+      }
+      .question-strip h2 {
+        max-width: 18ch;
+      }
+      .exposure-logos {
+        justify-items: start;
+      }
+      .portal-logo-zp {
+        width: min(100%, 420px);
+      }
+      .portal-logo-clv {
+        width: min(100%, 400px);
+      }
       .footer-cta,
       .brand-panel,
-      .brand-logo-panel,
-      .hero-side {
+      .brand-logo-panel {
         padding: 28px;
       }
       .footer-cta-actions {
@@ -874,8 +1836,30 @@
         width: min(100% - 24px, var(--content-width));
       }
 
+      .topbar-inner {
+        border-radius: 28px;
+        align-items: flex-start;
+      }
+
+      .brand-lockup {
+        gap: 12px;
+      }
+
       .brand-lockup img {
-        width: 96px;
+        width: 88px;
+      }
+
+      .brand-text {
+        padding-left: 12px;
+      }
+
+      .brand-text strong {
+        font-size: 0.88rem;
+      }
+
+      .brand-text span {
+        font-size: 0.72rem;
+        letter-spacing: 0.07rem;
       }
 
       h1 { max-width: none; }
@@ -886,11 +1870,119 @@
       }
 
       .btn { width: 100%; }
+      .hero {
+        padding-top: 100px;
+        background: #060606;
+      }
+      .hero-map::before {
+        background-position: 76% center;
+      }
+      .hero-map-flow {
+        opacity: 0.34;
+      }
+      .hero-overlay {
+        background:
+          linear-gradient(180deg, rgba(3, 3, 3, 0.76) 0%, rgba(3, 3, 3, 0.48) 100%),
+          linear-gradient(90deg, rgba(3, 3, 3, 0.95) 0%, rgba(5, 5, 5, 0.72) 44%, rgba(8, 8, 8, 0.24) 100%);
+      }
+      .hero-copy .eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.2rem;
+      }
+      .hero-copy h1 {
+        font-size: clamp(3rem, 14vw, 4.2rem);
+      }
+      .hero-copy .lead {
+        max-width: none;
+        font-size: 0.98rem;
+      }
+      .launch-media {
+        min-height: 62vh;
+      }
+      .launch-media::before {
+        background-position: center 22%;
+      }
+      .launch-media-content {
+        width: min(100% - 24px, 100%);
+        padding-bottom: 28px;
+      }
+      .launch-media-title {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+      }
+      .launch-line span {
+        font-size: clamp(2.2rem, 10.4vw, 3.9rem);
+      }
+      .question-strip-inner {
+        width: min(100% - 24px, 100%);
+        padding: 92px 0 64px;
+      }
+      .question-strip-kicker {
+        gap: 10px;
+        font-size: 0.76rem;
+        letter-spacing: 0.22rem;
+      }
+      .question-strip-kicker::before,
+      .question-strip-kicker::after {
+        width: 44px;
+      }
+      .question-strip h2 {
+        max-width: 12.5ch;
+        font-size: clamp(1.95rem, 8vw, 2.95rem);
+        line-height: 1.14;
+      }
+      .exposure-point {
+        padding-left: 52px;
+      }
+      .portal-logo-zp {
+        width: min(100%, 280px);
+      }
+      .portal-logo-clv {
+        width: min(100%, 260px);
+      }
+      .hero-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-card-icon {
+        width: 64px;
+        height: 64px;
+      }
       .footer-inner { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .brand-intro::after,
+      .brand-intro-inner,
+      .brand-intro-line,
+      .brand-intro-mark,
+      .hero-map-flow::before,
+      .hero-map-flow::after,
+      .hero-map::before,
+      .hero-map::after,
+      .launch-line span,
+      .question-strip-arrow,
+      .exposure-arrow,
+      .exposure-arrow path,
+      .portal-slide.visible {
+        animation: none;
+      }
+
+      .brand-intro-mark {
+        clip-path: none;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="brand-intro" id="brandIntro" aria-hidden="true">
+    <div class="brand-intro-inner">
+      <img class="brand-intro-mark" src="assets/logos/invertia-logo-negative-transparent.png" alt="INVERTIA">
+      <div class="brand-intro-line"></div>
+    </div>
+  </div>
+
   <header class="topbar" id="topbar">
     <div class="topbar-inner">
       <a class="brand-lockup" href="#inicio">
@@ -904,27 +1996,29 @@
       <nav class="topnav">
         <a href="#propuesta">Propuesta</a>
         <a href="#para-quien">Para quien es</a>
-        <a href="#marca">Que es INVERTIA</a>
+        <a href="#sistema">Como crece</a>
         <a href="#contacto">Contacto</a>
-        <a class="topnav-cta" href="#contacto">Hablar por WhatsApp</a>
+        <a class="topnav-cta" href="#contacto">
+          <svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3.2a8.65 8.65 0 0 0-7.5 12.96L3.2 20.8l4.77-1.26A8.66 8.66 0 1 0 12 3.2Zm0 15.78a7.04 7.04 0 0 1-3.58-.98l-.26-.15-2.83.75.76-2.76-.17-.28A7.03 7.03 0 1 1 12 18.98Zm3.86-5.27c-.21-.1-1.24-.61-1.43-.68-.19-.07-.33-.1-.47.1-.14.2-.54.68-.66.82-.12.14-.24.16-.45.05-.21-.1-.87-.32-1.65-1.03-.61-.54-1.02-1.2-1.14-1.4-.12-.2-.01-.31.09-.41.09-.09.21-.24.31-.36.1-.12.14-.2.21-.34.07-.14.03-.26-.02-.36-.05-.1-.47-1.14-.64-1.56-.17-.41-.34-.35-.47-.36h-.4c-.14 0-.36.05-.55.26-.19.21-.72.7-.72 1.71s.74 1.98.85 2.12c.1.14 1.46 2.23 3.53 3.13.49.21.87.33 1.17.42.49.15.94.13 1.29.08.39-.06 1.24-.51 1.42-1 .17-.49.17-.91.12-1-.05-.09-.19-.14-.4-.24Z" fill="currentColor"/>
+          </svg>
+          <span>Hablar por WhatsApp</span>
+        </a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="hero" id="inicio">
-      <div class="hero-bg">
-        <video autoplay muted loop playsinline>
-          <source src="assets/video/cordoba-hero.mp4" type="video/mp4">
-        </video>
-      </div>
+      <div class="hero-map"></div>
+      <div class="hero-map-flow"></div>
       <div class="hero-overlay"></div>
-      <div class="hero-grid"></div>
+      <div class="hero-vignette"></div>
 
-      <div class="container">
+      <div class="container hero-stage">
         <div class="hero-content">
           <div class="hero-copy">
-            <div class="eyebrow reveal visible delay-1">Cordoba, Argentina</div>
+            <div class="eyebrow reveal visible delay-1">CORDOBA, ARGENTINA</div>
             <h1 class="reveal visible delay-1">La red <span class="gold-text">premium</span> para corredores inmobiliarios que quieren crecer con respaldo.</h1>
             <p class="lead reveal visible delay-2">
               INVERTIA acompana a corredores inmobiliarios que recien comienzan o que ya estan
@@ -933,132 +2027,187 @@
             </p>
 
             <div class="hero-actions reveal visible delay-3">
-              <a class="btn btn-primary" href="https://wa.me/" target="_blank" rel="noreferrer">Hablar por WhatsApp</a>
-              <a class="btn btn-secondary" href="#propuesta">Conocer INVERTIA</a>
+              <a class="btn btn-primary" href="https://wa.me/" target="_blank" rel="noreferrer">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3.2a8.65 8.65 0 0 0-7.5 12.96L3.2 20.8l4.77-1.26A8.66 8.66 0 1 0 12 3.2Zm0 15.78a7.04 7.04 0 0 1-3.58-.98l-.26-.15-2.83.75.76-2.76-.17-.28A7.03 7.03 0 1 1 12 18.98Zm3.86-5.27c-.21-.1-1.24-.61-1.43-.68-.19-.07-.33-.1-.47.1-.14.2-.54.68-.66.82-.12.14-.24.16-.45.05-.21-.1-.87-.32-1.65-1.03-.61-.54-1.02-1.2-1.14-1.4-.12-.2-.01-.31.09-.41.09-.09.21-.24.31-.36.1-.12.14-.2.21-.34.07-.14.03-.26-.02-.36-.05-.1-.47-1.14-.64-1.56-.17-.41-.34-.35-.47-.36h-.4c-.14 0-.36.05-.55.26-.19.21-.72.7-.72 1.71s.74 1.98.85 2.12c.1.14 1.46 2.23 3.53 3.13.49.21.87.33 1.17.42.49.15.94.13 1.29.08.39-.06 1.24-.51 1.42-1 .17-.49.17-.91.12-1-.05-.09-.19-.14-.4-.24Z" fill="currentColor"/>
+                </svg>
+                <span>Hablar por WhatsApp</span>
+              </a>
+              <a class="btn btn-secondary" href="#propuesta">
+                <span>Conocer INVERTIA</span>
+                <svg class="hero-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
             </div>
           </div>
 
-          <aside class="hero-side reveal visible delay-2">
-            <img src="assets/logos/invertia-logo-negative-transparent.png" alt="INVERTIA logo">
-            <p>
-              Una propuesta sobria, moderna y corporativa para corredores inmobiliarios
-              que necesitan respaldo, posicionamiento y una base mas clara para crecer.
-            </p>
-            <div class="hero-points">
-              <div class="hero-point">Mas estructura para empezar o crecer con mejor base.</div>
-              <div class="hero-point">Mas visibilidad para captar y mover cartera activa.</div>
-              <div class="hero-point">Mas herramientas para trabajar con imagen profesional.</div>
+          <div class="hero-map-details" aria-hidden="true">
+            <span class="map-road map-road-primary"></span>
+            <span class="map-road map-road-secondary"></span>
+            <span class="map-road map-road-tertiary"></span>
+            <span class="map-road map-road-quaternary"></span>
+            <span class="map-road map-road-dashed"></span>
+
+            <div class="hero-pin hero-pin-main">
+              <svg viewBox="0 0 120 160" aria-hidden="true">
+                <defs>
+                  <linearGradient id="pin-main-stroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffefc3"/>
+                    <stop offset="55%" stop-color="#f0c96e"/>
+                    <stop offset="100%" stop-color="#bf8f2f"/>
+                  </linearGradient>
+                </defs>
+                <path d="M60 8c-27.5 0-49.5 21.7-49.5 49.3 0 17.4 8.1 30.1 19.1 42.4L60 147l30.4-47.3c11.1-12.2 19.1-25 19.1-42.4C109.5 29.7 87.5 8 60 8Z" fill="rgba(15,15,15,0.9)" stroke="url(#pin-main-stroke)" stroke-width="2.6"/>
+                <path d="M38 76.5 60 54l22 22" fill="none" stroke="#ffd98f" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M47 74v27h26V74" fill="none" stroke="#ffd98f" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="pin-pulse"></span>
+              <span class="pin-ring"></span>
             </div>
-          </aside>
-        </div>
-        <div class="hero-bottom-note reveal visible delay-3">Respaldo, visibilidad y herramientas para crecer mejor en el rubro</div>
-      </div>
-    </section>
 
-    <section class="section" id="propuesta">
-      <div class="container">
-        <div class="section-head">
-          <div class="reveal">
-            <div class="eyebrow">Propuesta concreta</div>
-            <h2>Todo lo que necesitas para crecer como corredor, dentro de una sola red.</h2>
-          </div>
-          <p class="section-note reveal delay-1">
-            INVERTIA combina respaldo profesional, visibilidad comercial y herramientas concretas
-            para que el corredor inmobiliario pueda empezar o crecer con una base mucho mas fuerte.
-          </p>
-        </div>
-
-        <div class="value-grid">
-          <article class="value-card reveal">
-            <span class="value-index">01</span>
-            <h3>Espacio y comunidad</h3>
-            <p>
-              Un entorno de trabajo con coworking, networking, capacitaciones y una red que
-              acompana tu desarrollo profesional.
-            </p>
-          </article>
-
-          <article class="value-card reveal delay-1">
-            <span class="value-index">02</span>
-            <h3>Captacion y exposicion</h3>
-            <p>
-              Publicidad, portales con destaque y recursos pensados para ayudarte a captar mejor
-              y mover tu cartera con mas fuerza.
-            </p>
-          </article>
-
-          <article class="value-card reveal delay-2">
-            <span class="value-index">03</span>
-            <h3>Marketing y contenido</h3>
-            <p>
-              Herramientas visuales, contenido profesional y recursos de imagen para que puedas
-              mostrarte y vender con otro nivel.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--light" id="para-quien">
-      <div class="container">
-        <div class="section-head">
-          <div class="reveal">
-            <div class="eyebrow">Para quien es</div>
-            <h2>Una red pensada para corredores inmobiliarios en distintas etapas de crecimiento.</h2>
-          </div>
-          <p class="section-note reveal delay-1">
-            INVERTIA no esta pensada para cualquiera. Esta pensada para el corredor que necesita una base
-            mejor para arrancar o para escalar con mayor claridad dentro del rubro.
-          </p>
-        </div>
-
-        <div class="profiles-grid">
-          <article class="profile-card reveal">
-            <h3>Si estas dando tus primeros pasos</h3>
-            <p>
-              INVERTIA te da una base mas clara para arrancar con respaldo, imagen y herramientas
-              que por tu cuenta serian mucho mas dificiles de sostener.
-            </p>
-          </article>
-
-          <article class="profile-card reveal delay-1">
-            <h3>Si ya estas en el rubro y queres escalar</h3>
-            <p>
-              La red te permite sumar estructura, visibilidad y recursos concretos para proyectarte
-              mejor como corredor inmobiliario.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="marca">
-      <div class="container">
-        <div class="brand-layout">
-          <article class="brand-logo-panel reveal">
-            <img src="assets/logos/invertia-logo-positive-transparent.png" alt="INVERTIA logo positivo">
-            <p>
-              INVERTIA nace para acompanar a corredores inmobiliarios que quieren construir su
-              camino con mas claridad, mas presencia y una propuesta mas profesional dentro del mercado.
-            </p>
-            <p>
-              No se trata solo de sumar herramientas. Se trata de tener una base real para crecer
-              dentro del rubro con mas orden, mas imagen y mas proyeccion.
-            </p>
-          </article>
-
-          <article class="brand-panel reveal delay-1">
-            <div class="eyebrow">Que es INVERTIA</div>
-            <blockquote>Tu desarrollo profesional, con el respaldo de una red mas fuerte.</blockquote>
-            <p>
-              INVERTIA esta pensada para que el corredor inmobiliario no tenga que construir todo desde cero
-              y en soledad. La propuesta es crecer con apoyo, presencia y una estructura mejor resuelta.
-            </p>
-            <div class="brand-points">
-              <div class="brand-point">Una red que combina respaldo real, presencia profesional y herramientas concretas.</div>
-              <div class="brand-point">Una propuesta que busca elevar la imagen del corredor desde el primer contacto.</div>
-              <div class="brand-point">Una base mas fuerte para desarrollarte dentro del rubro con mas claridad y proyeccion.</div>
+            <div class="hero-pin hero-pin-alt-1">
+              <svg viewBox="0 0 120 160" aria-hidden="true">
+                <path d="M60 14c-24.3 0-43.5 19.3-43.5 43.6 0 14.7 6.7 25.5 16.2 36.2L60 134.8l27.3-41c9.4-10.7 16.2-21.5 16.2-36.2C103.5 33.3 84.3 14 60 14Z" fill="rgba(17,17,17,0.84)" stroke="rgba(255,221,157,0.92)" stroke-width="2.1"/>
+                <path d="M43 78 60 61l17 17" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M49 76.5V98h22V76.5" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="pin-pulse"></span>
+              <span class="pin-ring"></span>
             </div>
+
+            <div class="hero-pin hero-pin-alt-2">
+              <svg viewBox="0 0 120 160" aria-hidden="true">
+                <path d="M60 14c-24.3 0-43.5 19.3-43.5 43.6 0 14.7 6.7 25.5 16.2 36.2L60 134.8l27.3-41c9.4-10.7 16.2-21.5 16.2-36.2C103.5 33.3 84.3 14 60 14Z" fill="rgba(17,17,17,0.84)" stroke="rgba(255,221,157,0.92)" stroke-width="2.1"/>
+                <path d="M43 78 60 61l17 17" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M49 76.5V98h22V76.5" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="pin-pulse"></span>
+              <span class="pin-ring"></span>
+            </div>
+
+            <div class="hero-pin hero-pin-alt-3">
+              <svg viewBox="0 0 120 160" aria-hidden="true">
+                <path d="M60 14c-24.3 0-43.5 19.3-43.5 43.6 0 14.7 6.7 25.5 16.2 36.2L60 134.8l27.3-41c9.4-10.7 16.2-21.5 16.2-36.2C103.5 33.3 84.3 14 60 14Z" fill="rgba(17,17,17,0.84)" stroke="rgba(255,221,157,0.92)" stroke-width="2.1"/>
+                <path d="M43 78 60 61l17 17" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M49 76.5V98h22V76.5" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="pin-pulse"></span>
+              <span class="pin-ring"></span>
+            </div>
+
+            <div class="hero-pin hero-pin-alt-4">
+              <svg viewBox="0 0 120 160" aria-hidden="true">
+                <path d="M60 14c-24.3 0-43.5 19.3-43.5 43.6 0 14.7 6.7 25.5 16.2 36.2L60 134.8l27.3-41c9.4-10.7 16.2-21.5 16.2-36.2C103.5 33.3 84.3 14 60 14Z" fill="rgba(17,17,17,0.84)" stroke="rgba(255,221,157,0.92)" stroke-width="2.1"/>
+                <path d="M43 78 60 61l17 17" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M49 76.5V98h22V76.5" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="pin-pulse"></span>
+              <span class="pin-ring"></span>
+            </div>
+
+            <div class="hero-pin hero-pin-alt-5">
+              <svg viewBox="0 0 120 160" aria-hidden="true">
+                <path d="M60 14c-24.3 0-43.5 19.3-43.5 43.6 0 14.7 6.7 25.5 16.2 36.2L60 134.8l27.3-41c9.4-10.7 16.2-21.5 16.2-36.2C103.5 33.3 84.3 14 60 14Z" fill="rgba(17,17,17,0.84)" stroke="rgba(255,221,157,0.92)" stroke-width="2.1"/>
+                <path d="M43 78 60 61l17 17" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M49 76.5V98h22V76.5" fill="none" stroke="#ffd98f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="pin-pulse"></span>
+              <span class="pin-ring"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cards reveal visible delay-3">
+          <article class="hero-card">
+            <div class="hero-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <path d="m16 4 8 4.6v9.1L16 22l-8-4.3V8.6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="m8 8.6 8 4.4 8-4.4M16 13v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m4.5 13.4 8 4.5v9.1l-8-4.5Zm15 4.5 8-4.5v9.1l-8 4.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="hero-card-copy">
+              <strong>ESTRUCTURA</strong>
+              <p>Mas base, acompanamiento y orden para empezar o crecer con mejor respaldo.</p>
+            </div>
+          </article>
+
+          <article class="hero-card">
+            <div class="hero-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <path d="M5 25.5h22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M8 22V13m7 9V9m7 13V5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="m7.5 14.5 7.5-5 6.5 2.5L27 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="hero-card-copy">
+              <strong>VISIBILIDAD</strong>
+              <p>Mas presencia y mejores condiciones para captar, mostrar y mover cartera activa.</p>
+            </div>
+          </article>
+
+          <article class="hero-card">
+            <div class="hero-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32">
+                <path d="m16 4.5 3.4 7 7.7 1.1-5.6 5.4 1.3 7.7L16 22.1l-6.8 3.6 1.3-7.7-5.6-5.4 7.7-1.1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="hero-card-copy">
+              <strong>IMAGEN</strong>
+              <p>Mas herramientas visuales para trabajar con una presentacion profesional y actual.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="launch-media" id="propuesta">
+      <div class="launch-media-content reveal">
+        <h2 class="launch-media-title" aria-label="Lanzá y hacé crecer tu inmobiliaria">
+          <span class="launch-line"><span>Lanzá y hacé</span></span>
+          <span class="launch-line"><span>crecer tu</span></span>
+          <span class="launch-line"><span>inmobiliaria</span></span>
+        </h2>
+      </div>
+    </section>
+
+    <section class="question-strip">
+      <div class="question-strip-inner">
+        <div class="question-strip-kicker reveal">Visión compartida</div>
+        <h2 class="reveal delay-1">¿Por qué seguir creciendo solo,<br>si podés <span class="question-highlight">construir</span> algo más grande<br>junto a una red de corredores con <span class="question-highlight">visión</span>?</h2>
+        <svg class="question-strip-arrow reveal delay-2" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="m6.5 13.5 5.5 5 5.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section exposure-section" id="para-quien">
+      <svg class="exposure-arrow" viewBox="0 0 520 640" aria-hidden="true">
+        <path d="M84 552c108-86 192-194 260-362m0 0-14 16m14-16-22-1" fill="none" stroke="rgba(227, 189, 104, 0.7)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="container exposure-wrap">
+        <div class="exposure-copy">
+          <div class="eyebrow reveal">Máxima exposición</div>
+          <h2 class="reveal delay-1">Más alcance.<br>Más oportunidades.</h2>
+          <p class="section-note reveal delay-2">Impulsamos tu cartera con herramientas pensadas para ganar visibilidad, posicionamiento y nuevas oportunidades.</p>
+
+          <div class="exposure-points">
+            <article class="exposure-point reveal">Captación impulsada con inversión publicitaria</article>
+            <article class="exposure-point reveal delay-1">Máximo destaque en portales estratégicos</article>
+            <article class="exposure-point reveal delay-2">Posicionamiento como anunciante Premier</article>
+            <article class="exposure-point reveal delay-3">Desarrollo de marca personal inmobiliaria</article>
+          </div>
+        </div>
+
+        <div class="exposure-logos">
+          <article class="portal-logo portal-logo-zp portal-slide reveal delay-1">
+            <img src="assets/zonaprop-logo-clean.webp" alt="Zonaprop">
+          </article>
+          <article class="portal-logo portal-logo-clv portal-slide reveal delay-2">
+            <img src="assets/clasificados-lavoz-logo-clean.webp" alt="Clasificados La Voz">
           </article>
         </div>
       </div>
@@ -1144,6 +2293,32 @@
   </footer>
 
   <script>
+    document.body.classList.add("intro-active");
+
+    const brandIntro = document.getElementById("brandIntro");
+    let introDismissed = false;
+
+    const dismissIntro = () => {
+      if (introDismissed) return;
+      introDismissed = true;
+      brandIntro.classList.add("is-hidden");
+      document.body.classList.remove("intro-active");
+    };
+
+    const introTimeout = window.setTimeout(dismissIntro, 1800);
+
+    ["click", "touchstart", "wheel"].forEach((eventName) => {
+      window.addEventListener(eventName, () => {
+        window.clearTimeout(introTimeout);
+        dismissIntro();
+      }, { once: true, passive: true });
+    });
+
+    window.addEventListener("keydown", () => {
+      window.clearTimeout(introTimeout);
+      dismissIntro();
+    }, { once: true });
+
     const revealItems = document.querySelectorAll(".reveal");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
